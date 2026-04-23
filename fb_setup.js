@@ -7,15 +7,6 @@
 // Input:  n/a
 // Return: n/a
 /**************************************************************/
-const firebaseConfig = {
-  apiKey: ,
-  authDomain: ,
-  databaseURL: ,
-  projectId: ,
-  storageBucket: ,
-  messagingSenderId:,
-  appId: ,
-  };
 
 const firebaseConfig = {
   apiKey: "AIzaSyAOhbMXzJp65SJ2-T2vWiRCN24wEZjZ4bE",
