@@ -7,20 +7,30 @@
 // Input:  n/a
 // Return: n/a
 /**************************************************************/
-  const firebaseConfig = {
-    apiKey: ,
-    authDomain: ,
-    databaseURL: ,
-    projectId: ,
-    storageBucket: ,
-    messagingSenderId:,
-    appId:
+const firebaseConfig = {
+  apiKey: ,
+  authDomain: ,
+  databaseURL: ,
+  projectId: ,
+  storageBucket: ,
+  messagingSenderId:,
+  appId: ,
   };
 
-  // Initialize Firebase
-  firebase.initializeApp(firebaseConfig);
+const firebaseConfig = {
+  apiKey: "AIzaSyAOhbMXzJp65SJ2-T2vWiRCN24wEZjZ4bE",
+  authDomain: "angus-uggan-12-comp.firebaseapp.com",
+  databaseURL: "https://angus-uggan-12-comp-default-rtdb.firebaseio.com",
+  projectId: "angus-uggan-12-comp",
+  storageBucket: "angus-uggan-12-comp.firebasestorage.app",
+  messagingSenderId: "649037328381",
+  appId: "1:649037328381:web:4b97f4b162b800c720f394"
+};
 
-  // This log prints the firebase object to the console to show that it is working.
-  // As soon as you have the script working, delete this log.
-  console.log("Firebase initialize finished:");
-  console.log(firebase);
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+
+// This log prints the firebase object to the console to show that it is working.
+// As soon as you have the script working, delete this log.
+console.log("Firebase initialize finished:");
+console.log(firebase);
