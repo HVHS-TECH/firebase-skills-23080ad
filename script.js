@@ -17,7 +17,7 @@ const HTML_OUTPUT = document.getElementById("databaseOutput");
 // The ref('/') part tells the operation to write to the base level of the database "/"
 // This means it replaces the whole database with message:Hello World
 /**************************************************************/
-function Hello(){
+function Hello() {
   console.log("Running Hello()")
   firebase.database().ref('/').set(
     {
@@ -27,7 +27,7 @@ function Hello(){
 }
 
 //***Goodbye***/
-function Goodbye(){
+function Goodbye() {
   console.log("Running Goodbye()")
   firebase.database().ref('/').set(
     {
@@ -37,27 +37,41 @@ function Goodbye(){
 }
 
 /***Simple Read***/
-function simpleRead(){
+function simpleRead() {
   console.log("Reading Message");
-  firebase.database().ref('/').child('messuuuge').once('value', displayRead);
-  display(snapshot);
+  firebase.database().ref('/').child('message').once('value', display, fb_readError);
   console.log("Leaving simple read");
 }
 
-/***Display Read***/
-function displayRead(snapshot) {
-  console.log("Running displayRead(), the message is: " + snapshot.val())
-  HTML_OUTPUT.innerHTML = snapshot.val();
-}
-
-
-/**find where this goes**/
-function display(snapshot){
+/**Display**/
+function display(snapshot) {
+  //checking for errors
   var dbData = snapshot.val();
-  if (dbData == null){
+  if (dbData == null) {
     console.log("There was no record when trying to read the message");
   } else {
-    console.log("The message is: " + dbData)
+    //displaying the message object
+    console.log("The message is: " + dbData);
+    HTML_OUTPUT.innerHTML = snapshot.val();
   }
-
 }
+
+/***fb_readError***/
+function fb_readError(error) {
+  console.log("THERE WAS AN ERROR READING YOUR MESSAGE");
+  console.error(error);
+}
+
+/***fb_readListener***/
+function fb_readListener() {
+  console.log("Read Listener");
+  firebase.database().ref('/message').on('value', fb_logDatabaseRead)
+}
+
+//readlistener call back
+function fb_logDatabaseRead() {
+  console.log("Message has changed to ");
+}
+
+//runs the readlistener auto on page load. since loading it once causes it to go forever
+fb_readListener();
