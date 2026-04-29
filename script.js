@@ -65,13 +65,46 @@ function fb_readError(error) {
 /***fb_readListener***/
 function fb_readListener() {
   console.log("Read Listener");
-  firebase.database().ref('/message').on('value', fb_logDatabaseRead)
+  firebase.database().ref('/message').on('value', display, fb_logDatabaseRead);
 }
 
 //readlistener call back
 function fb_logDatabaseRead() {
-  console.log("Message has changed to ");
+  firebase.database().ref('/message').on('value', display, fb_readError);
 }
 
+//Create a scoring table and populate it
+function updateScores() {
+  highScoreTable = {
+    game_1: {
+      users: {
+        Person: 50,
+        human: 70,
+        player: 10,
+      }
+      
+    },
+    game_2: {
+      users: {
+        Person: 39,
+        human: 11,
+        player: 98,
+      }
+      
+    }
+  }
+  //craetes the high score table then sets it here
+  firebase.database().ref('/').set(highScoreTable);
+}
+
+//add a new user and score
+function addFolk() {
+  firebase.database().ref('/game_1/users/folk/').set(322578598);
+}
+
+function fb_readHighScores() {
+  console.log("Reading highscores");
+  firebase.database().ref('/highscores/game_1').once('value', fb_logDatabaseRead, fb_readError);
+}
 //runs the readlistener auto on page load. since loading it once causes it to go forever
 fb_readListener();
