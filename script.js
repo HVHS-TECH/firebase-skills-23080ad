@@ -39,7 +39,7 @@ function Goodbye() {
 /***Simple Read***/
 function simpleRead() {
   console.log("Reading Message");
-  firebase.database().ref('/').child('message').once('value', display, fb_readError);
+  firebase.database().ref('/').child('message').once('value', display, fb_readError)
   console.log("Leaving simple read");
 }
 
@@ -65,46 +65,82 @@ function fb_readError(error) {
 /***fb_readListener***/
 function fb_readListener() {
   console.log("Read Listener");
-  firebase.database().ref('/message').on('value', display, fb_logDatabaseRead);
+  firebase.database().ref('/message').on('value', display, fb_logDatabaseRead)
 }
 
 //readlistener call back
 function fb_logDatabaseRead() {
-  firebase.database().ref('/message').on('value', display, fb_readError);
+  //displaying the message object
+  console.log(highScoreTable);
 }
 
 //Create a scoring table and populate it
 function updateScores() {
+  console.log("Updating scores");
   highScoreTable = {
-    game_1: {
-      users: {
+    highScores: {
+      game1: {
+
         Person: 50,
         human: 70,
         player: 10,
-      }
-      
-    },
-    game_2: {
-      users: {
+
+
+      },
+      game2: {
+
         Person: 39,
         human: 11,
         player: 98,
+
+
       }
-      
     }
   }
   //craetes the high score table then sets it here
-  firebase.database().ref('/').set(highScoreTable);
+  firebase.database().ref('/').set(highScoreTable)
+  console.log("Scores Updated!");
 }
 
 //add a new user and score
-function addFolk() {
-  firebase.database().ref('/game_1/users/folk/').set(322578598);
-}
+// function addFolk() {
+//   firebase.database().ref('/game1/users/folk/').set(322578598)
+//   console.log(highScoreTable["folk"]);
+// }
 
+//read the current highscores
 function fb_readHighScores() {
   console.log("Reading highscores");
-  firebase.database().ref('/highscores/game_1').once('value', fb_logDatabaseRead, fb_readError);
+  firebase.database().ref('/highScores/game1').once('value', fb_displayAllHighscores, fb_readError);
 }
+
+//display the current highscore
+function fb_displayAllHighscores(snapshot) {
+  let highScores = snapshot.val()
+  console.log("Person got " + highScores["Person"] + " Points")
+
+  //users in game1
+  let names = Object.keys(highScores);
+  console.log(names);
+
+  for(i = 0; i < names.length; i++){
+    let key = names[i];
+    console.log("Score " + (i+1) + " is for " + key + ". They scored " + highScores[key] + " points.");
+  }
+}
+
+// function fb_displayAllHighscores(snapshot) {
+//   let highScores = snapshot.val()
+//   console.log("Person got " + highScores["Person"] + " Points")
+
+//   //users in game1
+//   let names = Object.keys(highScores);
+//   console.log(names);
+
+//   for(i = 0; i < names.length; i++){
+//     let key = names[i];
+//     console.log("Score " + (i+1) + " is for " + key + ". They scored " + highScores[key] + " points.");
+//   }
+// }
 //runs the readlistener auto on page load. since loading it once causes it to go forever
 fb_readListener();
