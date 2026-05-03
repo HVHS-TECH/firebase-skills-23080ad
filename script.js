@@ -81,9 +81,9 @@ function updateScores() {
     highScores: {
       game1: {
 
-        Person: 50,
-        human: 70,
-        player: 10,
+        aerson: 50,
+        cuman: 70,
+        blayer: 10,
 
 
       },
@@ -103,44 +103,31 @@ function updateScores() {
 }
 
 //add a new user and score
-// function addFolk() {
-//   firebase.database().ref('/game1/users/folk/').set(322578598)
-//   console.log(highScoreTable["folk"]);
-// }
+function addFolk() {
+  firebase.database().ref('/highScores/game1/folk/').set(322578598)
+  console.log(highScoreTable["folk"]);
+}
 
 //read the current highscores
-function fb_readHighScores() {
+function fb_readScoreSortedHighScores() {
   console.log("Reading highscores");
-  firebase.database().ref('/highScores/game1').once('value', fb_displayAllHighscores, fb_readError);
+  firebase.database().ref('/highScores/game1').orderByValue().limitToLast(3).once('value', fb_displayAllHighScores, fb_readError);
+}
+
+function fb_readNameSortedHighScores() {
+  console.log("reading highscores sorted by name");
+  firebase.database().ref('/highScores/game1').orderByName().limitToLast(3).once('value', fb_displayAllHighScores);
 }
 
 //display the current highscore
-function fb_displayAllHighscores(snapshot) {
-  let highScores = snapshot.val()
+function fb_displayAllHighScores(snapshot) {
+  let highScores = snapshot.forEach(fb_showOneScore)
   console.log("Person got " + highScores["Person"] + " Points")
-
-  //users in game1
-  let names = Object.keys(highScores);
-  console.log(names);
-
-  for(i = 0; i < names.length; i++){
-    let key = names[i];
-    console.log("Score " + (i+1) + " is for " + key + ". They scored " + highScores[key] + " points.");
-  }
 }
 
-// function fb_displayAllHighscores(snapshot) {
-//   let highScores = snapshot.val()
-//   console.log("Person got " + highScores["Person"] + " Points")
+function fb_showOneScore(child) {
+  console.log(child.key + " got " + child.val() + " points");
+}
 
-//   //users in game1
-//   let names = Object.keys(highScores);
-//   console.log(names);
-
-//   for(i = 0; i < names.length; i++){
-//     let key = names[i];
-//     console.log("Score " + (i+1) + " is for " + key + ". They scored " + highScores[key] + " points.");
-//   }
-// }
 //runs the readlistener auto on page load. since loading it once causes it to go forever
 fb_readListener();
