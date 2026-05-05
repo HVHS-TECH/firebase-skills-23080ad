@@ -17,6 +17,31 @@ const HTML_OUTPUT = document.getElementById("databaseOutput");
 // The ref('/') part tells the operation to write to the base level of the database "/"
 // This means it replaces the whole database with message:Hello World
 /**************************************************************/
+function fb_login() {
+  console.log("Logging in")
+  firebase.auth().onAuthStateChanged((user) => {
+    if (user) {
+      console.log("Logged in")
+      console.log(user)
+      // User is signed in, see docs for a list of avaliable properties
+      // https://firebase.google.com/docs/refrence/js/firebase.User
+      var uid = user.uid;
+
+      // ...
+    } else {
+      console.log("Not logged in")
+      // User is signed out
+      // Using a popup.
+      var provider = new firebase.auth.GoogleAuthProvider();
+      firebase.auth().signInWithPopup(provider).then(function(result) {
+      // This gives you a Google Access Token.
+      var token = result.credential.accessToken;
+      // The signed in user info.
+      var user = result.user;
+      });
+    }
+  });
+}
 function Hello() {
   console.log("Running Hello()")
   firebase.database().ref('/').set(
@@ -116,7 +141,7 @@ function fb_readScoreSortedHighScores() {
 
 function fb_readNameSortedHighScores() {
   console.log("reading highscores sorted by name");
-  firebase.database().ref('/highScores/game1').orderByName().limitToLast(3).once('value', fb_displayAllHighScores);
+  firebase.database().ref('/highScores/game1').orderByKey().limitToLast(3).once('value', fb_displayAllHighScores);
 }
 
 //display the current highscore
