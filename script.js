@@ -90,7 +90,7 @@ function fb_readError(error) {
 /***fb_readListener***/
 function fb_readListener() {
   console.log("Read Listener");
-  firebase.database().ref('/message').on('value', display, fb_logDatabaseRead)
+  firebase.database().ref('/message/').on('value', display, fb_logDatabaseRead)
 }
 
 //readlistener call back
@@ -136,18 +136,18 @@ function addFolk() {
 //read the current highscores
 function fb_readScoreSortedHighScores() {
   console.log("Reading highscores");
-  firebase.database().ref('/highScores/game1').orderByValue().limitToLast(3).once('value', fb_displayAllHighScores, fb_readError);
+  firebase.database().ref('/highScores/game1/').orderByValue().once('value', fb_displayAllHighScores, fb_readError);
 }
 
 function fb_readNameSortedHighScores() {
-  console.log("reading highscores sorted by name");
-  firebase.database().ref('/highScores/game1').orderByKey().limitToLast(3).once('value', fb_displayAllHighScores);
+  console.log("Reading highscores sorted by name");
+  firebase.database().ref('/highScores/game1/').orderByKey().limitToLast(3).once('value', fb_displayAllHighScores, fb_readError);
 }
+//*************************//
 
 //display the current highscore
 function fb_displayAllHighScores(snapshot) {
-  let highScores = snapshot.forEach(fb_showOneScore)
-  console.log("Person got " + highScores["Person"] + " Points")
+  let highScores = snapshot.forEach(fb_showOneScore);
 }
 
 function fb_showOneScore(child) {
